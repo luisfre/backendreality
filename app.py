@@ -9,8 +9,6 @@ import pandas as pd
 from flask_cors import CORS
 
 
-# Asegúrate de haber descargado las stopwords
-nltk.download('stopwords')
 
 app = Flask(__name__)
 CORS(app)
@@ -20,9 +18,20 @@ model = pickle.load(open('model.pkl', 'rb'))
 vectorizer = pickle.load(open('vectorize.pkl', 'rb'))
 
 # Función de preprocesamiento
+def load_spanish_stopwords():
+    stopwords_path = 'nltk_data/corpora/stopwords/spanish'  # Ruta al archivo de stopwords
+    try:
+        with open(stopwords_path, 'r', encoding='utf-8') as file:
+            stop_words = file.read().splitlines()
+    except FileNotFoundError:
+        print(f"El archivo de stopwords en español no se encontró en la ruta: {stopwords_path}")
+        stop_words = []
+    return stop_words
+
+
 def preprocess(text):
     result = []
-    stop_words = list(stopwords.words('spanish'))
+    stop_words = load_spanish_stopwords()
     stop_words.extend(['según', 'tras', 'cabe', 'bajo', 'durante', 'mediante', 'so', 'toda', 'todas', 'cada', 'me', 
                        'después', 'despues', 'segun', 'solo', 'sido', 'estan', 'lunes', 'martes', 'miércoles', 
                        'jueves', 'viernes'])
