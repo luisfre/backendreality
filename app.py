@@ -44,7 +44,7 @@ def preprocess(text):
 # Función para insertar fila en el CSV
 def insertar_fila_csv(title, text, fuente, razon, fake_new_class):
     # Definir el archivo CSV
-    archivo_csv = 'C:/Users/lucho/OneDrive/Documentos/Uce/tesisnube/tesis/Reality Hunter/assets/noticias_clasificadas.csv'
+    archivo_csv = 'https://luisfre.github.io/Realityhunter/assets/noticias_clasificadas.csv'
     
     # Limpiar el texto
     cleaned_news = preprocess(text)
@@ -99,7 +99,7 @@ def insert_news():
 
 @app.route('/load_news', methods=['GET'])
 def load_news():
-    archivo_csv = 'C:/Users/lucho/OneDrive/Documentos/Uce/tesisnube/tesis/Reality Hunter/assets/noticias_clasificadas.csv'
+    archivo_csv = 'https://luisfre.github.io/Realityhunter/assets/noticias_clasificadas.csv'
     
     try:
         # Cargar el CSV usando pandas
