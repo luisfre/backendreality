@@ -4,4 +4,5 @@ gunicorn==21.2.0
 gensim>=4.0
 joblib>=1.0
 scikit-learn>=1.0
+Flask-CORS>=3.0.9
 
