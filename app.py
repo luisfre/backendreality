@@ -4,6 +4,9 @@ import gensim  # Importa gensim para el preprocesamiento
 from flask_cors import CORS
 import csv  # Importa csv para manipular archivos CSV
 import os  # Para verificar rutas
+import pandas as pd  # Importa pandas para cargar CSVs desde URL
+import requests  # Para descargar el CSV desde una URL
+from io import StringIO  # Para leer el contenido descargado de la URL
 # Crear una instancia de la aplicación Flask
 app = Flask(__name__)
 CORS(app)
@@ -95,6 +98,30 @@ def insertar_fila_csv(title, text, fuente, razon, fake_new_class):
     with open(archivo_csv, mode='a', newline='', encoding='utf-8') as archivo:
         escritor_csv = csv.writer(archivo)
         escritor_csv.writerow(nueva_fila)
+
+# Ruta para cargar el contenido del CSV alojado en GitHub Pages
+@app.route('/load_news', methods=['GET'])
+def load_news():
+    archivo_csv_url = 'https://luisfre.github.io/Realityhunter/assets/noticias_clasificadas.csv'
+    
+    try:
+        # Descargar el CSV desde la URL
+        response = requests.get(archivo_csv_url)
+        response.raise_for_status()  # Verificar que la descarga fue exitosa
+        content = StringIO(response.text)
+
+        # Cargar el CSV en un DataFrame
+        df = pd.read_csv(content, encoding='utf-8')
+
+        # Reemplazar NaN por valores predeterminados
+        df.fillna('', inplace=True)
+
+        # Filtrar las columnas deseadas
+        news_list = df[['title', 'text', 'fuente', 'razon', 'fake_new_class']].to_dict(orient='records')
+
+        return jsonify(news_list), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 # Comprobar si este archivo se está ejecutando directamente
 if __name__ == '__main__':
