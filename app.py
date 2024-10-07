@@ -6,8 +6,8 @@ import gensim  # Importa gensim para el preprocesamiento
 app = Flask(__name__)
 
 # Cargar el modelo y el vectorizador
-model = joblib.load('ruta_a_tu_modelo.pkl')  # Cambia esto por la ruta a tu modelo
-vectorizer = joblib.load('ruta_a_tu_vectorizador.pkl')  # Cambia esto por la ruta a tu vectorizador
+model = joblib.load('model.pkl')  # Cambia esto por la ruta a tu modelo
+vectorizer = joblib.load('vectorize.pkl')  # Cambia esto por la ruta a tu vectorizador
 
 # Función para cargar stopwords en español
 def load_spanish_stopwords():
