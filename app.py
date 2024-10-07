@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify
 import joblib  # Asegúrate de tener joblib para cargar tu modelo y vectorizador
 import gensim  # Importa gensim para el preprocesamiento
-
+from flask_cors import CORS
 # Crear una instancia de la aplicación Flask
 app = Flask(__name__)
 CORS(app)
