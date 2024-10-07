@@ -1,10 +1,14 @@
 from flask import Flask
 
+# Crear una instancia de la aplicación Flask
 app = Flask(__name__)
 
+# Definir la ruta de la raíz
 @app.route('/')
-def home():
-    return "¡Bienvenido a mi aplicación Flask!"
+def hello_world():
+    return '¡Hola, mundo!'
 
+# Comprobar si este archivo se está ejecutando directamente
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=10000)
+    # Ejecutar la aplicación
+    app.run(host='0.0.0.0', port=5000)
