@@ -79,6 +79,10 @@ def predict():
         "fake_probability": probabilities[0][1] * 100
     })
 
+@app.route('/')
+def home():
+    return "¡Bienvenido a mi aplicación Flask!"
+
 # Nueva ruta para insertar noticias directamente en el CSV
 @app.route('/insert_news', methods=['POST'])
 def insert_news():
@@ -120,4 +124,4 @@ def load_news():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=10000)
