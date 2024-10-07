@@ -4,6 +4,7 @@ import gensim  # Importa gensim para el preprocesamiento
 
 # Crear una instancia de la aplicación Flask
 app = Flask(__name__)
+CORS(app)
 
 # Cargar el modelo y el vectorizador
 model = joblib.load('model.pkl')  # Cambia esto por la ruta a tu modelo
