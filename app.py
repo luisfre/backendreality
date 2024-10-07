@@ -2,6 +2,8 @@ from flask import Flask, request, jsonify
 import joblib  # Asegúrate de tener joblib para cargar tu modelo y vectorizador
 import gensim  # Importa gensim para el preprocesamiento
 from flask_cors import CORS
+import csv  # Importa csv para manipular archivos CSV
+import os  # Para verificar rutas
 # Crear una instancia de la aplicación Flask
 app = Flask(__name__)
 CORS(app)
@@ -59,6 +61,40 @@ def predict():
         "real_probability": probabilities[0][0] * 100,
         "fake_probability": probabilities[0][1] * 100
     })
+
+# Ruta para insertar una noticia en el CSV
+@app.route('/insert_news', methods=['POST'])
+def insert_news():
+    data = request.json
+    title = data.get('title', '')
+    text = data.get('text', '')
+    fuente = data.get('fuente', '')
+    razon = data.get('razon', '')
+    fake_new_class = data.get('fake_new_class', 'unknown')
+
+    if not title or not text:
+        return jsonify({"error": "Faltan datos. Se requiere título y texto de la noticia."}), 400
+
+    # Insertar la noticia en el CSV
+    insertar_fila_csv(title, text, fuente, razon, fake_new_class)
+
+    return jsonify({"message": "Noticia insertada correctamente en el archivo CSV."})
+
+# Función para insertar una fila en el CSV
+def insertar_fila_csv(title, text, fuente, razon, fake_new_class):
+    archivo_csv = 'noticias_clasificadas.csv'  # Ruta local del archivo CSV
+
+    # Limpiar el texto
+    cleaned_news = preprocess(text)
+    cleaned_news_joined = " ".join(cleaned_news)
+
+    # Preparar la fila a insertar
+    nueva_fila = [title, text.replace('\n', ' '), fuente, razon, fake_new_class]
+
+    # Insertar la fila en el archivo CSV
+    with open(archivo_csv, mode='a', newline='', encoding='utf-8') as archivo:
+        escritor_csv = csv.writer(archivo)
+        escritor_csv.writerow(nueva_fila)
 
 # Comprobar si este archivo se está ejecutando directamente
 if __name__ == '__main__':
